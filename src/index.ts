@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { setupDb, migrateSchema } from '@/db';
+import { setupDb } from "@/db";
 
 /*
 const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
@@ -10,7 +10,8 @@ console.log(
 */
 
 async function main() {
-  await migrateSchema();
+  const db = setupDb();
+  console.log(typeof db);
 }
 
 main();

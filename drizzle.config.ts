@@ -1,6 +1,10 @@
-import type { Config } from 'drizzle-kit';
+import { config } from "@/utils";
+import type { Config } from "drizzle-kit";
 
 export default {
   schema: "./src/schema/index.ts",
-  out: "./migrations",
+  driver: "pg",
+  dbCredentials: {
+    connectionString: config.databaseUrl,
+  },
 } satisfies Config;
