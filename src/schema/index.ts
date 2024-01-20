@@ -18,6 +18,7 @@ export const questions = trivueSchema.table("questions", {
   text: text("text").notNull(),
   seconds: integer("seconds").notNull(),
   explanation: text("explanation"),
+  level: varchar("level", { length: 255 }).notNull(),
 });
 
 export type Question = typeof questions.$inferSelect;
