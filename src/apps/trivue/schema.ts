@@ -1,7 +1,7 @@
-import { config } from "@/utils";
 import { boolean, integer, pgSchema, text, varchar } from "drizzle-orm/pg-core";
+import { trivueDbSchema } from './constants';
 
-export const trivueSchema = pgSchema(config.databaseSchema);
+export const trivueSchema = pgSchema(trivueDbSchema);
 
 export const authors = trivueSchema.table("authors", {
   id: varchar("id", { length: 21 }).primaryKey(),
