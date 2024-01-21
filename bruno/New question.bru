@@ -1,0 +1,33 @@
+meta {
+  name: New question
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base}}trivue/questions
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "seconds": 20,
+    "text": "Are you hungry?",
+    "level": "basic",
+    "author": {
+      "url": "https://mywebsite.com",
+      "name": "Richard RM."
+    },
+    "choices": [
+      {
+        "text": "true",
+        "isCorrect": true
+      },
+      {
+        "text": "false",
+        "isCorrect": false
+      }
+    ]
+  }
+}
