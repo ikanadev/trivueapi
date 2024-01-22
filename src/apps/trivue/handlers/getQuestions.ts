@@ -22,7 +22,9 @@ export async function getQuestions(
 ) {
 	app.get(
 		"/questions",
-		async ({ query }) => {
+		async ({ query, request }) => {
+			console.log(request.headers);
+			console.log(app.server?.requestIP(request));
 			const results = await db
 				.select({
 					question: questions,

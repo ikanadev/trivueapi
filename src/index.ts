@@ -1,11 +1,21 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 import { setupDb } from "@/db";
-import { config } from "@/utils";
+import { config, AppDecorators } from "@/utils";
 import { setupTrivueApp } from "@/apps/trivue";
 
 const db = setupDb();
 
-const app = new Elysia();
+const app = new Elysia<"", AppDecorators>();
+
+app.use((innerApp) => {
+	return innerApp.derive(({ request }) => {
+		const ipInfo = innerApp.server?.requestIP(request);
+		return {
+			ip: ipInfo?.address,
+		};
+	});
+});
+
 app.group("/trivue", (app) => setupTrivueApp(app, db));
 
 app.get("/health", () => "Working!");
