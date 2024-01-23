@@ -27,7 +27,7 @@ export const questions = trivueSchema.table("questions", {
 	seconds: integer("seconds").notNull(),
 	explanation: text("explanation"),
 	level: varchar("level", { length: 255 }).notNull(),
-	createdAt: timestamp("created_at").defaultNow(),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export type Question = typeof questions.$inferSelect;
@@ -49,6 +49,7 @@ export const votes = trivueSchema.table(
 	"votes",
 	{
 		ip: varchar("ip", { length: 39 }).notNull(),
+		type: varchar("type", { length: 255 }).notNull(),
 		questionId: varchar("question_id", { length: 21 })
 			.references(() => authors.id)
 			.notNull(),

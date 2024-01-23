@@ -4,7 +4,7 @@ export enum Level {
 	expert = "expert",
 }
 
-export enum Vote {
-	postive = "postive",
+export enum VoteType {
+	positive = "positive",
 	negative = "negative",
 }
