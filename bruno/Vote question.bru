@@ -1,0 +1,17 @@
+meta {
+  name: Vote question
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base}}trivue/questions/RDr1XeuN8twdCgFbSxlYU/vote
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "vote": "positive"
+  }
+}
