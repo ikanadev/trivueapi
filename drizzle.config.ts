@@ -1,6 +1,6 @@
-import { config } from "@/utils";
+import { config } from "./src/utils";
 import type { Config } from "drizzle-kit";
-import { trivueDbSchema } from '@/apps/trivue';
+import { trivueDbSchema } from './src/apps/trivue';
 
 export default {
   schema: ["./src/apps/trivue/schema.ts"],
