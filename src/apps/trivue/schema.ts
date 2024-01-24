@@ -51,7 +51,7 @@ export const votes = trivueSchema.table(
 		ip: varchar("ip", { length: 39 }).notNull(),
 		type: varchar("type", { length: 255 }).notNull(),
 		questionId: varchar("question_id", { length: 21 })
-			.references(() => authors.id)
+			.references(() => questions.id)
 			.notNull(),
 	},
 	(table) => {
