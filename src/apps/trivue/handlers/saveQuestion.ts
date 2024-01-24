@@ -1,9 +1,9 @@
 import { Type } from "@sinclair/typebox";
+import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { RootServer } from "../../../types";
-import { Level } from "../types";
 import { Author, ChoiceInsert, authors, choices, questions } from "../schema";
-import { eq } from "drizzle-orm";
+import { Level } from "../types";
 
 const body = Type.Object({
 	text: Type.String(),

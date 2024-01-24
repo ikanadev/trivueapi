@@ -1,9 +1,9 @@
 import Fastify from "fastify";
-import { config } from "./utils";
+import { AppError } from "./appError";
+import { trivueApp } from "./apps/trivue";
 import { setupDb } from "./db";
 import { RootServer } from "./types";
-import { trivueApp } from "./apps/trivue";
-import { AppError } from "./appError";
+import { config } from "./utils";
 
 const db = setupDb();
 
