@@ -50,6 +50,7 @@ export const votes = trivueSchema.table(
 	{
 		ip: varchar("ip", { length: 39 }).notNull(),
 		type: varchar("type", { length: 255 }).notNull(),
+		createdAt: timestamp("createdAt").defaultNow().notNull(),
 		questionId: varchar("question_id", { length: 21 })
 			.references(() => questions.id)
 			.notNull(),
