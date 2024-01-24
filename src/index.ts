@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 import { AppError } from "./appError";
 import { trivueApp } from "./apps/trivue";
 import { setupDb } from "./db";
@@ -8,6 +9,8 @@ import { config } from "./utils";
 const db = setupDb();
 
 const app: RootServer = Fastify({ logger: !config.isProd });
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
 app.decorate("db", db);
 
 app.register(trivueApp, { prefix: "/trivue" });

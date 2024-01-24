@@ -1,5 +1,5 @@
-import { Type } from "@sinclair/typebox";
 import { eq, inArray, sql } from "drizzle-orm";
+import { z } from "zod";
 import { AppError } from "../../../appError";
 import { RootServer } from "../../../types";
 import { HttpStatusCode } from "../../../utils";
@@ -18,7 +18,7 @@ import { Level, VoteType } from "../types";
 const voteDifference = 1;
 const maxQuestions = 2;
 
-type QuestionItem = Omit<Question, "authorId" | "level"> & {
+type QuestionItem = Omit<Question, "authorId" | "level" | "ip"> & {
 	author: Author | null;
 	choices: Omit<Choice, "questionId">[];
 	votes: {
@@ -27,8 +27,8 @@ type QuestionItem = Omit<Question, "authorId" | "level"> & {
 	};
 };
 
-const queryString = Type.Object({
-	level: Type.Enum(Level),
+const queryString = z.object({
+	level: z.nativeEnum(Level),
 });
 
 export async function getQuestions(app: RootServer) {

@@ -1,25 +1,25 @@
-import { Type } from "@sinclair/typebox";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import { z } from "zod";
 import { RootServer } from "../../../types";
 import { Author, ChoiceInsert, authors, choices, questions } from "../schema";
 import { Level } from "../types";
 
-const body = Type.Object({
-	text: Type.String(),
-	seconds: Type.Number(),
-	explanation: Type.Optional(Type.String()),
-	level: Type.Enum(Level),
-	choices: Type.Array(
-		Type.Object({
-			text: Type.String(),
-			isCorrect: Type.Boolean(),
+const body = z.object({
+	text: z.string(),
+	seconds: z.number(),
+	explanation: z.optional(z.string()),
+	level: z.nativeEnum(Level),
+	choices: z.array(
+		z.object({
+			text: z.string(),
+			isCorrect: z.boolean(),
 		}),
 	),
-	author: Type.Optional(
-		Type.Object({
-			url: Type.String(),
-			name: Type.String(),
+	author: z.optional(
+		z.object({
+			url: z.string(),
+			name: z.string(),
 		}),
 	),
 });

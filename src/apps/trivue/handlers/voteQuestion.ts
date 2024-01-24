@@ -1,17 +1,17 @@
-import { Type } from "@sinclair/typebox";
 import { and, eq } from "drizzle-orm";
+import { z } from "zod";
 import { AppError } from "../../../appError";
 import { RootServer } from "../../../types";
 import { HttpStatusCode } from "../../../utils";
 import { questions, votes } from "../schema";
 import { VoteType } from "../types";
 
-const params = Type.Object({
-	id: Type.String(),
+const params = z.object({
+	id: z.string(),
 });
 
-const body = Type.Object({
-	vote: Type.Enum(VoteType),
+const body = z.object({
+	vote: z.nativeEnum(VoteType),
 });
 
 export async function voteQuestion(app: RootServer) {

@@ -1,5 +1,5 @@
 import { IncomingMessage, Server, ServerResponse } from "http";
-import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { FastifyBaseLogger, FastifyInstance } from "fastify";
 
@@ -14,6 +14,6 @@ export type RootServer = FastifyInstance<
 	IncomingMessage,
 	ServerResponse<IncomingMessage>,
 	FastifyBaseLogger,
-	TypeBoxTypeProvider
+	ZodTypeProvider
 >;
 
