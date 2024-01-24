@@ -22,6 +22,7 @@ export type AuthorInsert = typeof authors.$inferInsert;
 
 export const questions = trivueSchema.table("questions", {
 	id: varchar("id", { length: 21 }).primaryKey(),
+	ip: varchar("ip", { length: 39 }).notNull(),
 	authorId: varchar("author_id", { length: 21 }).references(() => authors.id),
 	text: text("text").notNull(),
 	seconds: integer("seconds").notNull(),

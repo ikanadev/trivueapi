@@ -31,7 +31,7 @@ export async function saveQuestion(app: RootServer) {
 			schema: { body: body },
 		},
 		async function(req, res) {
-			const body = req.body;
+			const { body, ip } = req;
 			let author: Author | null = null;
 			if (body.author) {
 				const dbAuthors = await this.db
@@ -56,6 +56,7 @@ export async function saveQuestion(app: RootServer) {
 				.insert(questions)
 				.values({
 					id: nanoid(),
+					ip,
 					text: body.text,
 					authorId: author?.id,
 					seconds: body.seconds,
