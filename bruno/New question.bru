@@ -13,22 +13,26 @@ post {
 body:json {
   {
     "seconds": 15,
-    "text": "question with explanation?",
-    "level": "medium",
-    "explanation": "this is explanation",
+    "text": "What's is the answer to the universe?",
+    "level": "expert",
+    "explanation": "42 is always the answer",
     "author": {
-      "url": "https://mywebsi.co",
-      "name": "Dan Lincon"
+      "url": "https://mio.co",
+      "name": "Dan Mio"
     },
     "choices": [
       {
-        "text": "pears",
-        "isCorrect": true
+        "text": "Nobody knows",
+        "isCorrect": false
       },
       {
-        "text": "oranges",
-        "isCorrect": false
+        "text": "42",
+        "isCorrect": true
       }
     ]
   }
+}
+
+docs {
+  level can be one of: basic, medium or expert
 }
