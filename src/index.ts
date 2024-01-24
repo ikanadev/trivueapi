@@ -1,23 +1,18 @@
 import Fastify from "fastify";
 import { config } from "./utils";
 import { setupDb } from "./db";
+import { RootServer } from "./types";
+import { trivueApp } from "./apps/trivue";
 
 const db = setupDb();
 
-const app = Fastify({ logger: true });
+const app: RootServer = Fastify({ logger: true });
 app.decorate("db", db);
 
-app.register(async (childApp) => {
-	childApp.decorate("id", 5);
-	childApp.get("/", async function(req, res) {
-		console.log(this.db);
-		res.send({});
-	});
-});
+app.register(trivueApp, { prefix: "/trivue" });
 
-app.get("/", async function (req, res) {
-	console.log(this.db);
-	res.send({ hello: "worlds xd xd" });
+app.get("/health", async (_, res) => {
+	res.send({ status: "running" });
 });
 
 async function start() {

@@ -1,2 +1,1 @@
-export {trivueDbSchema} from './constants';
-export {setupTrivueApp} from './app';
+export { trivueApp } from "./app";

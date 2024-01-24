@@ -1,14 +1,6 @@
-import { Elysia } from "elysia";
-import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { saveQuestion, getQuestions, saveVote } from "@trivue/handlers";
-import { AppDecorators } from "@/utils";
+import { newQuestion } from "./handlers/newQuestion";
+import { RootServer } from "../../types";
 
-export function setupTrivueApp(
-	app: Elysia<"/trivue", AppDecorators>,
-	db: PostgresJsDatabase,
-) {
-	saveQuestion(app, db);
-	getQuestions(app, db);
-	saveVote(app, db);
-	return app;
+export async function trivueApp(app: RootServer) {
+	await newQuestion(app);
 }
