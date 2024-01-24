@@ -1,7 +1,9 @@
 import { Type } from "@sinclair/typebox";
-import { RootServer } from "../../../types";
-import { questions, votes } from "../schema";
 import { and, eq } from "drizzle-orm";
+import { AppError } from "../../../appError";
+import { RootServer } from "../../../types";
+import { HttpStatusCode } from "../../../utils";
+import { questions, votes } from "../schema";
 import { VoteType } from "../types";
 
 const params = Type.Object({
@@ -22,19 +24,21 @@ export async function voteQuestion(app: RootServer) {
 			},
 		},
 		async function (req, res) {
-			const { params, body } = req;
-			const ip = req.ip;
+			const { params, body, ip } = req;
 
 			const dbItems = await this.db
 				.select()
 				.from(questions)
 				.where(eq(questions.id, params.id));
-			console.log("QUESTIONS: ", dbItems);
+
 			if (dbItems.length === 0) {
 				throw Error("Question not found");
 			}
 			if (ip === null || ip.length === 0) {
-				throw Error("Can not identify your request");
+				throw new AppError(
+					HttpStatusCode.BAD_REQUEST,
+					"Can not identify your request",
+				);
 			}
 
 			const dbQuestion = dbItems[0];
@@ -43,14 +47,16 @@ export async function voteQuestion(app: RootServer) {
 				.from(votes)
 				.where(and(eq(votes.ip, ip), eq(votes.questionId, dbQuestion.id)));
 			if (dbVotes.length > 0) {
-				throw Error("Seems like you already voted for this question");
+				throw new AppError(
+					HttpStatusCode.CONFLICT,
+					"Seems like you already voted for this question",
+				);
 			}
 			await this.db.insert(votes).values({
 				ip,
 				questionId: dbQuestion.id,
 				type: body.vote,
 			});
-			console.log(typeof this);
 			res.send({ params: req.params });
 		},
 	);
