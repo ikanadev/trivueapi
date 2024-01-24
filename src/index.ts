@@ -1,25 +1,32 @@
-import { Elysia } from "elysia";
-import { setupDb } from "@/db";
-import { config, AppDecorators } from "@/utils";
-import { setupTrivueApp } from "@/apps/trivue";
+import Fastify from "fastify";
+import { config } from "./utils";
+import { setupDb } from "./db";
 
 const db = setupDb();
 
-const app = new Elysia<"", AppDecorators>();
+const app = Fastify({ logger: true });
+app.decorate("db", db);
 
-app.use((innerApp) => {
-	return innerApp.derive(({ request }) => {
-		const ipInfo = innerApp.server?.requestIP(request);
-		return {
-			ip: ipInfo?.address,
-		};
+app.register(async (childApp) => {
+	childApp.decorate("id", 5);
+	childApp.get("/", async function(req, res) {
+		console.log(this.db);
+		res.send({});
 	});
 });
 
-app.group("/trivue", (app) => setupTrivueApp(app, db));
-
-app.get("/health", () => "Working!");
-
-app.listen({ port: config.port }, () => {
-	console.log(`🦊 Running at ${app.server?.hostname}:${app.server?.port}`);
+app.get("/", async function (req, res) {
+	console.log(this.db);
+	res.send({ hello: "worlds xd xd" });
 });
+
+async function start() {
+	try {
+		await app.listen({ port: parseInt(config.port) });
+	} catch (e) {
+		console.error(e);
+		process.exit(1);
+	}
+}
+
+start();

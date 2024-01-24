@@ -3,19 +3,24 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "bun run src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node build/index.js",
     "pushdb": "drizzle-kit push:pg"
   },
   "dependencies": {
+    "dotenv": "^16.3.2",
     "drizzle-orm": "^0.29.3",
-    "elysia": "latest",
+    "fastify": "^4.25.2",
     "nanoid": "^5.0.4",
     "postgres": "^3.4.3"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.2",
-    "bun-types": "latest",
+    "@types/node": "^20.11.5",
     "drizzle-kit": "^0.20.13",
+    "nodemon": "^3.0.3",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "module": "src/index.js"
