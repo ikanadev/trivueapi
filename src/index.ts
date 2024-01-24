@@ -7,7 +7,7 @@ import { AppError } from "./appError";
 
 const db = setupDb();
 
-const app: RootServer = Fastify({ logger: true });
+const app: RootServer = Fastify({ logger: !config.isProd });
 app.decorate("db", db);
 
 app.register(trivueApp, { prefix: "/trivue" });
@@ -21,9 +21,14 @@ app.setErrorHandler((err, _, res) => {
 		res.status(err.code).send({ message: err.message });
 	}
 	// TODO: Log error details
-	res.status(500).send({
-		message: "Woops, An unexpected error happened. Sorry for the inconvenience",
-	});
+	if (config.isProd) {
+		res.status(500).send({
+			message:
+				"Woops, An unexpected error happened. Sorry for the inconvenience",
+		});
+	} else {
+		res.status(500).send(err);
+	}
 });
 
 async function start() {
