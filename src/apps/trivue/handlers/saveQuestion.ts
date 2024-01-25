@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { RootServer } from "../../../utils";
+import { RootServer, appMessage } from "../../../utils";
 import { Author, ChoiceInsert, authors, choices, questions } from "../schema";
 import { Level } from "../types";
 
@@ -72,7 +72,7 @@ export async function saveQuestion(app: RootServer) {
 				questionId: question.id,
 			}));
 			await this.db.insert(choices).values(choicesToSave);
-			res.send({ message: "Question created!" });
+			res.send(appMessage("Question created!"));
 		},
 	);
 }

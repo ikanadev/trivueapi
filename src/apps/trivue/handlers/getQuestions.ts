@@ -2,6 +2,7 @@ import {
 	AnyColumn,
 	SQLWrapper,
 	asc,
+	count,
 	desc,
 	eq,
 	inArray,
@@ -12,7 +13,7 @@ import { RootServer } from "../../../utils";
 import { questions, votes } from "../schema";
 import { Level, VoteType } from "../types";
 
-enum SortDir {
+enum SortOrder {
 	asc = "asc",
 	desc = "desc",
 }
@@ -22,11 +23,29 @@ enum SortType {
 	duration = "duration",
 }
 
+type QuestionVotes = {
+	positive: number;
+	negative: number;
+};
+
+type QuestionItem = {
+	id: string;
+	text: string;
+	level: Level;
+	createdAt: Date;
+	votes: QuestionVotes;
+};
+
+type Response = {
+	total: number;
+	questions: Array<QuestionItem>;
+};
+
 const querystring = z.object({
-	page: z.number().positive(),
-	size: z.number().positive(),
+	page: z.number({ coerce: true }).positive(),
+	size: z.number({ coerce: true }).positive(),
 	sort: z.nativeEnum(SortType),
-	dir: z.nativeEnum(SortDir),
+	order: z.nativeEnum(SortOrder),
 	level: z.optional(z.nativeEnum(Level)),
 });
 
@@ -50,7 +69,7 @@ export async function getQuestions(app: RootServer) {
 			.as("votesQuery");
 
 		let orderDir = asc;
-		if (query.dir === SortDir.desc) {
+		if (query.order === SortOrder.desc) {
 			orderDir = desc;
 		}
 
@@ -79,6 +98,12 @@ export async function getQuestions(app: RootServer) {
 				break;
 		}
 
+		const dbTotalQuestions = await this.db
+			.select({total: count()})
+			.from(questions)
+			.where(inArray(questions.level, levels));
+		const total = dbTotalQuestions[0].total;
+
 		const dbQuestions = await this.db
 			.with(votesQuery)
 			.select()
@@ -87,7 +112,27 @@ export async function getQuestions(app: RootServer) {
 			.leftJoin(votesQuery, eq(questions.id, votesQuery.questionId))
 			.orderBy(orderDir(orderField))
 			.limit(query.size)
-			.offset(query.size * query.page);
-		res.send(dbQuestions);
+			.offset(query.size * (query.page - 1));
+
+		const responseQuestions: Array<QuestionItem> = [];
+		for (const dbQuestion of dbQuestions) {
+			const item: QuestionItem = {
+				id: dbQuestion.questions.id,
+				text: dbQuestion.questions.text,
+				level: dbQuestion.questions.level as Level,
+				createdAt: dbQuestion.questions.createdAt,
+				votes: {positive: 0, negative: 0},
+			};
+			if (dbQuestion.votesQuery) {
+				const {positive, negative} = dbQuestion.votesQuery;
+				item.votes = {positive, negative};
+			}
+			responseQuestions.push(item);
+		}
+		const response: Response = {
+			total,
+			questions: responseQuestions,
+		}
+		res.send(response);
 	});
 }

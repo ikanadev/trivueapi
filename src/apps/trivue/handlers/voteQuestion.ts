@@ -1,6 +1,11 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { AppError, HttpStatusCode, RootServer } from "../../../utils";
+import {
+	AppError,
+	HttpStatusCode,
+	RootServer,
+	appMessage,
+} from "../../../utils";
 import { questions, votes } from "../schema";
 import { VoteType } from "../types";
 
@@ -55,7 +60,7 @@ export async function voteQuestion(app: RootServer) {
 				questionId: dbQuestion.id,
 				type: body.vote,
 			});
-			res.send({ params: req.params });
+			res.send(appMessage("Vote saved!"));
 		},
 	);
 }
