@@ -1,15 +1,18 @@
 meta {
   name: Questions
   type: http
-  seq: 3
+  seq: 5
 }
 
 get {
-  url: {{base}}trivue/questions?level=medium
+  url: {{base}}trivue/questions?page=1&size=10&sort=date&order=asc
   body: none
   auth: none
 }
 
 query {
-  level: medium
+  page: 1
+  size: 10
+  sort: date
+  order: asc
 }

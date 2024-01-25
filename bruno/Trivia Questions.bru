@@ -1,0 +1,15 @@
+meta {
+  name: Trivia Questions
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base}}trivue/questions/trivia?level=expert
+  body: none
+  auth: none
+}
+
+query {
+  level: expert
+}
