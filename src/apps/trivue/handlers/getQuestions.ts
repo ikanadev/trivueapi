@@ -1,9 +1,16 @@
-import { FastifySchema } from "fastify";
-import { RootServer } from "../../../types";
+import {
+	AnyColumn,
+	SQLWrapper,
+	asc,
+	desc,
+	eq,
+	inArray,
+	sql,
+} from "drizzle-orm";
 import { z } from "zod";
-import { Level, VoteType } from "../types";
+import { RootServer } from "../../../utils";
 import { questions, votes } from "../schema";
-import { AnyColumn, SQLWrapper, asc, desc, eq, sql } from "drizzle-orm";
+import { Level, VoteType } from "../types";
 
 enum SortDir {
 	asc = "asc",
@@ -23,7 +30,7 @@ const querystring = z.object({
 	level: z.optional(z.nativeEnum(Level)),
 });
 
-export async function getTriviaQuestions(app: RootServer) {
+export async function getQuestions(app: RootServer) {
 	app.get("/questions", { schema: { querystring } }, async function(req, res) {
 		const query = req.query;
 		const votesQuery = this.db
@@ -59,13 +66,28 @@ export async function getTriviaQuestions(app: RootServer) {
 				break;
 		}
 
+		let levels = [Level.basic, Level.medium, Level.expert];
+		switch (query.level) {
+			case Level.basic:
+				levels = [Level.basic];
+				break;
+			case Level.medium:
+				levels = [Level.medium];
+				break;
+			case Level.expert:
+				levels = [Level.expert];
+				break;
+		}
+
 		const dbQuestions = await this.db
 			.with(votesQuery)
 			.select()
 			.from(questions)
+			.where(inArray(questions.level, levels))
 			.leftJoin(votesQuery, eq(questions.id, votesQuery.questionId))
 			.orderBy(orderDir(orderField))
 			.limit(query.size)
 			.offset(query.size * query.page);
+		res.send(dbQuestions);
 	});
 }

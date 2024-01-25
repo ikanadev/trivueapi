@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { RootServer } from "../../../types";
+import { RootServer } from "../../../utils";
 import { Author, ChoiceInsert, authors, choices, questions } from "../schema";
 import { Level } from "../types";
 

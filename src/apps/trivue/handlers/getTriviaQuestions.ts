@@ -1,8 +1,6 @@
 import { eq, inArray, sql } from "drizzle-orm";
 import { z } from "zod";
-import { AppError } from "../../../appError";
-import { RootServer } from "../../../types";
-import { HttpStatusCode } from "../../../utils";
+import { AppError, HttpStatusCode, RootServer } from "../../../utils";
 import {
 	Author,
 	Choice,

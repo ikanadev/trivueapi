@@ -17,3 +17,7 @@ export type RootServer = FastifyInstance<
 	ZodTypeProvider
 >;
 
+export type AppMessage = {
+	message: string;
+};
+

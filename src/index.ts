@@ -1,10 +1,11 @@
 import Fastify from "fastify";
-import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
-import { AppError } from "./appError";
+import {
+	serializerCompiler,
+	validatorCompiler,
+} from "fastify-type-provider-zod";
 import { trivueApp } from "./apps/trivue";
 import { setupDb } from "./db";
-import { RootServer } from "./types";
-import { config } from "./utils";
+import { AppError, RootServer, config } from "./utils";
 
 const db = setupDb();
 

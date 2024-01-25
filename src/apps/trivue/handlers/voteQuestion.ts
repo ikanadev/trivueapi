@@ -1,8 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { AppError } from "../../../appError";
-import { RootServer } from "../../../types";
-import { HttpStatusCode } from "../../../utils";
+import { AppError, HttpStatusCode, RootServer } from "../../../utils";
 import { questions, votes } from "../schema";
 import { VoteType } from "../types";
 
@@ -23,7 +21,7 @@ export async function voteQuestion(app: RootServer) {
 				body: body,
 			},
 		},
-		async function (req, res) {
+		async function(req, res) {
 			const { params, body, ip } = req;
 
 			const dbItems = await this.db
