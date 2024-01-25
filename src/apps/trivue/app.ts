@@ -1,8 +1,8 @@
 import { RootServer } from "../../types";
-import { getQuestions, saveQuestion, voteQuestion } from "./handlers";
+import { getTriviaQuestions, saveQuestion, voteQuestion } from "./handlers";
 
 export async function trivueApp(app: RootServer) {
 	await saveQuestion(app);
-	await getQuestions(app);
+	await getTriviaQuestions(app);
 	await voteQuestion(app);
 }
