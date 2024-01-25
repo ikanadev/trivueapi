@@ -31,9 +31,9 @@ const queryString = z.object({
 	level: z.nativeEnum(Level),
 });
 
-export async function getQuestions(app: RootServer) {
+export async function getTriviaQuestions(app: RootServer) {
 	app.get(
-		"/questions",
+		"/questions/trivia",
 		{
 			schema: {
 				querystring: queryString,
