@@ -1,8 +1,8 @@
+import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { AppError, HttpStatusCode, RootServer } from "../../../utils";
 import { authors, choices, questions, votes } from "../schema";
-import { eq, sql } from "drizzle-orm";
-import { VoteType, QuestionVotes, Level } from "../types";
+import { Level, QuestionVotes, VoteType } from "../types";
 
 const params = z.object({
 	id: z.string(),
