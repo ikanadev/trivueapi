@@ -8,3 +8,9 @@ export enum VoteType {
 	positive = "positive",
 	negative = "negative",
 }
+
+export type QuestionVotes = {
+	positive: number;
+	negative: number;
+};
+

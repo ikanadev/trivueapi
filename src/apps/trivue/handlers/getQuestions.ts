@@ -11,7 +11,7 @@ import {
 import { z } from "zod";
 import { RootServer } from "../../../utils";
 import { questions, votes } from "../schema";
-import { Level, VoteType } from "../types";
+import { Level, VoteType, QuestionVotes } from "../types";
 
 enum SortOrder {
 	asc = "asc",
@@ -22,11 +22,6 @@ enum SortType {
 	votes = "votes",
 	duration = "duration",
 }
-
-type QuestionVotes = {
-	positive: number;
-	negative: number;
-};
 
 type QuestionItem = {
 	id: string;

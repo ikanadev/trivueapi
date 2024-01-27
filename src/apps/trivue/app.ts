@@ -6,4 +6,5 @@ export async function trivueApp(app: RootServer) {
 	await handlers.getTriviaQuestions(app);
 	await handlers.getQuestions(app);
 	await handlers.voteQuestion(app);
+	await handlers.questionDetails(app);
 }
