@@ -8,7 +8,7 @@ import { Level } from "../types";
 const body = z.object({
 	text: z.string(),
 	seconds: z.number(),
-	explanation: z.optional(z.string()),
+	explanation: z.nullable(z.string()),
 	level: z.nativeEnum(Level),
 	choices: z.array(
 		z.object({
@@ -16,7 +16,7 @@ const body = z.object({
 			isCorrect: z.boolean(),
 		}),
 	),
-	author: z.optional(
+	author: z.nullable(
 		z.object({
 			url: z.string(),
 			name: z.string(),

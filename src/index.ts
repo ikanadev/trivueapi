@@ -3,6 +3,7 @@ import {
 	serializerCompiler,
 	validatorCompiler,
 } from "fastify-type-provider-zod";
+import cors from "@fastify/cors";
 import { trivueApp } from "./apps/trivue";
 import { setupDb } from "./db";
 import { AppError, RootServer, config } from "./utils";
@@ -10,6 +11,7 @@ import { AppError, RootServer, config } from "./utils";
 const db = setupDb();
 
 const app: RootServer = Fastify({ logger: !config.isProd });
+app.register(cors);
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 app.decorate("db", db);
