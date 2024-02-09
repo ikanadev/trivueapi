@@ -36,7 +36,7 @@ const querystring = z.object({
 	size: z.number({ coerce: true }).positive(),
 	sort: z.nativeEnum(SortType),
 	order: z.nativeEnum(SortOrder),
-	level: z.optional(z.nativeEnum(Level)),
+	level: z.union([z.nativeEnum(Level), z.literal("all")]),
 });
 
 const response = z.object({
@@ -59,7 +59,7 @@ export async function getQuestions(app: RootServer) {
 	app.get(
 		"/questions",
 		{ schema: { querystring, response: { 200: response } } },
-		async function(req, res) {
+		async function (req, res) {
 			const query = req.query;
 			const votesQuery = this.db
 				.select({
@@ -94,8 +94,11 @@ export async function getQuestions(app: RootServer) {
 					break;
 			}
 
-			let levels = [Level.basic, Level.medium, Level.expert];
+			let levels = [];
 			switch (query.level) {
+				case "all":
+					levels = [Level.basic, Level.medium, Level.expert];
+					break;
 				case Level.basic:
 					levels = [Level.basic];
 					break;
